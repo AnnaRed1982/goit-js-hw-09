@@ -18,6 +18,7 @@ let intervalId = null;
 
 buttonStartREF.addEventListener('click', onStart);
 buttonStopREF.addEventListener('click', onStop);
+buttonStopREF.setAttribute('disabled', true);
 
 function onStart() {
   intervalId = setInterval(ChangeColor, 1000);
