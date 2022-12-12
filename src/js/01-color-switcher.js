@@ -22,10 +22,12 @@ buttonStopREF.addEventListener('click', onStop);
 function onStart() {
   intervalId = setInterval(ChangeColor, 1000);
   buttonStartREF.setAttribute('disabled', true);
+  buttonStopREF.removeAttribute('disabled');
 }
 function onStop() {
   clearInterval(intervalId);
   buttonStartREF.removeAttribute('disabled');
+  buttonStopREF.setAttribute('disabled', true);
 }
 function ChangeColor() {
   bodyREF.style.backgroundColor = getRandomHexColor();
