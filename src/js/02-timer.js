@@ -11,10 +11,8 @@ const options = {
   },
 };
 const fp = flatpickr('#datetime-picker', options);
-
-
-
-
+const buttonStartREF = document.querySelector('button[data-start]');
+buttonStartREF.setAttribute('disabled','true')
 
 function convertMs(ms) {
   // Number of milliseconds per unit of time
