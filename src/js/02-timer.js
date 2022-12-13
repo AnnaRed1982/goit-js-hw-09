@@ -49,31 +49,46 @@ const options = {
   minuteIncrement: 1,
 
   onClose(selectedDates) {
-    const originalDate = new Date();
     console.log(selectedDates[0]);
-    console.log(originalDate);
-    console.log(selectedDates[0] - originalDate);
 
-    if (selectedDates[0] < originalDate) {
-      window.alert('Please choose a date in the future');
-      buttonStartREF.setAttribute('disabled', 'true');
-    }
-    if (selectedDates[0] > originalDate) {
-      buttonStartREF.removeAttribute('disabled');
-      const time = convertMs(selectedDates[0] - originalDate);
-      console.log(time);
-    }
+    const date = selectedDates[0].getTime();
+    return date;
   },
 };
 
 const fp = flatpickr('#datetime-picker', options);
-const buttonStartREF = document.querySelector('[data-start]');
-const secondsREF = document.querySelector('[data-seconds]');
-const minutesREF = document.querySelector('[data-minutes]');
-const hoursREF = document.querySelector('[data-hours]');
-const daysREF = document.querySelector('[data-days]');
+
+const buttonStartREF = document.querySelector('button[data-start]');
+const secondsREF = document.querySelector('span[data-seconds]');
+const minutesREF = document.querySelector('span[data-minutes]');
+const hoursREF = document.querySelector('span[data-hours]');
+const daysREF = document.querySelector('span[data-days]');
+
+const COUNTER_DELAY = 1000;
+let timeSeconds = 0;
+let date = 0;
 
 buttonStartREF.setAttribute('disabled', 'true');
+buttonStartREF.addEventListener('click', onStart);
+
+function onStart() {
+  const originalDate = Date.now();
+  timeSeconds = date - originalDate;
+
+  if (timeSeconds < 0) {
+    alert('Please choose a date in the future');
+    buttonStartREF.setAttribute('disabled', 'true');
+    return;
+  }
+
+  buttonStartREF.removeAttribute('disabled');
+
+  const { days, hours, minutes, seconds } = convertMs(timeSeconds);
+  days < 2 ? (daysREF.textContent = pad(days)) : (daysREF.textContent = days);
+  hoursREF.textContent = pad(hours);
+  minutesREF.textContent = pad(minutes);
+  secondsREF.textContent = pad(seconds);
+}
 
 function convertMs(ms) {
   // Number of milliseconds per unit of time
@@ -81,7 +96,6 @@ function convertMs(ms) {
   const minute = second * 60;
   const hour = minute * 60;
   const day = hour * 24;
-
   // Remaining days
   const days = Math.floor(ms / day);
   // Remaining hours
@@ -93,7 +107,9 @@ function convertMs(ms) {
 
   return { days, hours, minutes, seconds };
 }
-
-console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
-console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
-console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
+function pad(value) {
+  return String(value).padStart(2, '0');
+}
+// console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
+// console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
+// console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}

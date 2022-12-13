@@ -15,13 +15,14 @@ const buttonStartREF = document.querySelector('button[data-start]');
 const buttonStopREF = document.querySelector('button[data-stop]');
 const bodyREF = document.querySelector('body');
 let intervalId = null;
+const NOTIFICATION_DELAY = 1000;
 
 buttonStartREF.addEventListener('click', onStart);
 buttonStopREF.addEventListener('click', onStop);
 buttonStopREF.setAttribute('disabled', true);
 
 function onStart() {
-  intervalId = setInterval(ChangeColor, 1000);
+  intervalId = setInterval(ChangeColor, NOTIFICATION_DELAY);
   buttonStartREF.setAttribute('disabled', true);
   buttonStopREF.removeAttribute('disabled');
 }
