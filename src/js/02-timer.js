@@ -51,8 +51,18 @@ const options = {
   onClose(selectedDates) {
     console.log(selectedDates[0]);
 
-    const date = selectedDates[0].getTime();
-    return date;
+    if (selectedDates[0] < Date.now()) {
+      alert('Please choose a date in the future');
+      buttonStartREF.setAttribute('disabled', 'true');
+      return;
+    }
+
+    buttonStartREF.removeAttribute('disabled');
+
+    const selectedDate = selectedDates[0].getTime();
+    console.log(selectedDate);
+
+    return selectedDate;
   },
 };
 
@@ -66,22 +76,20 @@ const daysREF = document.querySelector('span[data-days]');
 
 const COUNTER_DELAY = 1000;
 let timeSeconds = 0;
-let date = 0;
+let selectedDate = 0;
 
 buttonStartREF.setAttribute('disabled', 'true');
 buttonStartREF.addEventListener('click', onStart);
+selectedDate = fp.onClose;
 
-function onStart() {
+function onStart(selectedDate) {
   const originalDate = Date.now();
-  timeSeconds = date - originalDate;
+    console.log(originalDate);
+    
+      console.log(timeSeconds);
 
-  if (timeSeconds < 0) {
-    alert('Please choose a date in the future');
-    buttonStartREF.setAttribute('disabled', 'true');
-    return;
-  }
-
-  buttonStartREF.removeAttribute('disabled');
+  timeSeconds = originalDate - selectedDate;
+  console.log(timeSeconds);
 
   const { days, hours, minutes, seconds } = convertMs(timeSeconds);
   days < 2 ? (daysREF.textContent = pad(days)) : (daysREF.textContent = days);
