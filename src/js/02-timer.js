@@ -47,6 +47,7 @@ const options = {
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
+ 
 
   onClose(selectedDates) {
     console.log(selectedDates[0]);
@@ -59,15 +60,13 @@ const options = {
 
     buttonStartREF.removeAttribute('disabled');
 
-    const selectedDate = selectedDates[0].getTime();
-    console.log(selectedDate);
-
-    return selectedDate;
+    console.log(selectedDates[0].getTime());
+    return selectedDates[0].getTime();
   },
 };
 
 const fp = flatpickr('#datetime-picker', options);
-
+// console.table(fp);
 const buttonStartREF = document.querySelector('button[data-start]');
 const secondsREF = document.querySelector('span[data-seconds]');
 const minutesREF = document.querySelector('span[data-minutes]');
@@ -78,18 +77,22 @@ const COUNTER_DELAY = 1000;
 let timeSeconds = 0;
 let selectedDate = 0;
 
+selectedDate = fp.selectedDates[0].getTime();
+
 buttonStartREF.setAttribute('disabled', 'true');
 buttonStartREF.addEventListener('click', onStart);
-selectedDate = fp.onClose;
 
-function onStart(selectedDate) {
+console.log(selectedDate);
+
+function onStart() {
   const originalDate = Date.now();
-    console.log(originalDate);
-    
-      console.log(timeSeconds);
+  console.log(originalDate);
+
+  console.log(selectedDate);
 
   timeSeconds = originalDate - selectedDate;
   console.log(timeSeconds);
+  console.log(convertMs(timeSeconds));
 
   const { days, hours, minutes, seconds } = convertMs(timeSeconds);
   days < 2 ? (daysREF.textContent = pad(days)) : (daysREF.textContent = days);
