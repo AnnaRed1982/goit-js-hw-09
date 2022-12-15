@@ -52,24 +52,30 @@ const daysREF = document.querySelector('span[data-days]');
 const timerREF = document.querySelector('.timer');
 const fieldREF = document.querySelectorAll('.field');
 const labelREF = document.querySelectorAll('.label');
+const valueREF = document.querySelectorAll('.value');
 
 const COUNTER_DELAY = 1000;
 
 buttonStartREF.setAttribute('disabled', 'true');
 timerREF.style.display = 'flex';
-timerREF.style.gap = '10px';
-// labelREF.style.fontWeight = '600';
+timerREF.style.gap = '20px';
 
-for (let i = 0; i < fieldREF.length; i += 1) {
-  fieldREF[i].style.display = 'flex';
-  fieldREF[i].style.flexDirection = 'column-reverse';
-}
 fieldREF.forEach(field => {
   field.style.display = 'flex';
-  field.style.flexDirection = 'column-reverse';
+  field.style.flexDirection = 'column';
 });
 labelREF.forEach(label => {
-  label.style.fontWeight = '600';
+  label.style.fontWeight = '400';
+  label.style.display = 'flex';
+  label.style.justifyContent = 'center';
+  label.style.fontSize = '12px';
+  label.style.textTransform = 'uppercase';
+});
+valueREF.forEach(value => {
+  value.style.display = 'flex';
+  value.style.justifyContent = 'center';
+  value.style.fontWeight = '600';
+  value.style.fontSize = '28px';
 });
 
 const options = {
