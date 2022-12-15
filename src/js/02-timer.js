@@ -42,12 +42,30 @@
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
+const buttonStartREF = document.querySelector('button[data-start]');
+
+const secondsREF = document.querySelector('span[data-seconds]');
+const minutesREF = document.querySelector('span[data-minutes]');
+const hoursREF = document.querySelector('span[data-hours]');
+const daysREF = document.querySelector('span[data-days]');
+
+const timerREF = document.querySelector('.timer');
+const fieldREF = document.querySelector('.field');
+const labelREF = document.querySelector('.label');
+
+const COUNTER_DELAY = 1000;
+
+buttonStartREF.setAttribute('disabled', 'true');
+timerREF.style.display = 'flex';
+fieldREF.style.display = 'flex';
+fieldREF.style.flexDirection = 'column';
+labelREF.style.fontWeight = '600';
+
 const options = {
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
- 
 
   onClose(selectedDates) {
     console.log(selectedDates[0]);
@@ -59,46 +77,32 @@ const options = {
     }
 
     buttonStartREF.removeAttribute('disabled');
-
-    console.log(selectedDates[0].getTime());
-    return selectedDates[0].getTime();
+    buttonStartREF.addEventListener('click', () => {
+      startTimer(selectedDates[0].getTime());
+    });
   },
 };
 
 const fp = flatpickr('#datetime-picker', options);
-// console.table(fp);
-const buttonStartREF = document.querySelector('button[data-start]');
-const secondsREF = document.querySelector('span[data-seconds]');
-const minutesREF = document.querySelector('span[data-minutes]');
-const hoursREF = document.querySelector('span[data-hours]');
-const daysREF = document.querySelector('span[data-days]');
 
-const COUNTER_DELAY = 1000;
-let timeSeconds = 0;
-let selectedDate = 0;
+function startTimer(selectedDate) {
+  let intervalTimer = setInterval(() => {
+    buttonStartREF.setAttribute('disabled', 'true');
 
-selectedDate = fp.selectedDates[0].getTime();
+    const originalDate = Date.now();
+    let timeSeconds = selectedDate - originalDate;
+    console.log(timeSeconds);
 
-buttonStartREF.setAttribute('disabled', 'true');
-buttonStartREF.addEventListener('click', onStart);
-
-console.log(selectedDate);
-
-function onStart() {
-  const originalDate = Date.now();
-  console.log(originalDate);
-
-  console.log(selectedDate);
-
-  timeSeconds = originalDate - selectedDate;
-  console.log(timeSeconds);
-  console.log(convertMs(timeSeconds));
-
-  const { days, hours, minutes, seconds } = convertMs(timeSeconds);
-  days < 2 ? (daysREF.textContent = pad(days)) : (daysREF.textContent = days);
-  hoursREF.textContent = pad(hours);
-  minutesREF.textContent = pad(minutes);
-  secondsREF.textContent = pad(seconds);
+    if (timeSeconds > 0) {
+      const { days, hours, minutes, seconds } = convertMs(timeSeconds);
+      days < 2
+        ? (daysREF.textContent = addLeadingZero(days))
+        : (daysREF.textContent = days);
+      hoursREF.textContent = addLeadingZero(hours);
+      minutesREF.textContent = addLeadingZero(minutes);
+      secondsREF.textContent = addLeadingZero(seconds);
+    } else clearInterval(intervalTimer);
+  }, COUNTER_DELAY);
 }
 
 function convertMs(ms) {
@@ -118,9 +122,7 @@ function convertMs(ms) {
 
   return { days, hours, minutes, seconds };
 }
-function pad(value) {
+
+function addLeadingZero(value) {
   return String(value).padStart(2, '0');
 }
-// console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
-// console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
-// console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
