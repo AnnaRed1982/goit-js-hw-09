@@ -64,11 +64,13 @@ for (let i = 0; i < fieldREF.length; i += 1) {
   fieldREF[i].style.display = 'flex';
   fieldREF[i].style.flexDirection = 'column-reverse';
 }
-for (let i = 0; i < labelREF.length; i += 1) {
-  labelREF[i].style.fontWeight = '600';
-}
-// const fieldREF1 = fieldREF.map(field => {fieldREF.style.display = 'flex'})
-console.log(labelREF);
+fieldREF.forEach(field => {
+  field.style.display = 'flex';
+  field.style.flexDirection = 'column-reverse';
+});
+labelREF.forEach(label => {
+  label.style.fontWeight = '600';
+});
 
 const options = {
   enableTime: true,
