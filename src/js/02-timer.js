@@ -50,16 +50,25 @@ const hoursREF = document.querySelector('span[data-hours]');
 const daysREF = document.querySelector('span[data-days]');
 
 const timerREF = document.querySelector('.timer');
-const fieldREF = document.querySelector('.field');
-const labelREF = document.querySelector('.label');
+const fieldREF = document.querySelectorAll('.field');
+const labelREF = document.querySelectorAll('.label');
 
 const COUNTER_DELAY = 1000;
 
 buttonStartREF.setAttribute('disabled', 'true');
 timerREF.style.display = 'flex';
-fieldREF.style.display = 'flex';
-fieldREF.style.flexDirection = 'column';
-labelREF.style.fontWeight = '600';
+timerREF.style.gap = '10px';
+// labelREF.style.fontWeight = '600';
+
+for (let i = 0; i < fieldREF.length; i += 1) {
+  fieldREF[i].style.display = 'flex';
+  fieldREF[i].style.flexDirection = 'column-reverse';
+}
+for (let i = 0; i < labelREF.length; i += 1) {
+  labelREF[i].style.fontWeight = '600';
+}
+// const fieldREF1 = fieldREF.map(field => {fieldREF.style.display = 'flex'})
+console.log(labelREF);
 
 const options = {
   enableTime: true,
