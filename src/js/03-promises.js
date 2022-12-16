@@ -33,7 +33,6 @@
 function createPromise(position, delay) {
   return new Promise((resolve, reject) => {
     const shouldResolve = Math.random() > 0.3;
-    console.log(shouldResolve);
 
     setTimeout(() => {
       if (shouldResolve) {
@@ -73,4 +72,3 @@ function onFormSubmit(evt) {
 const formREF = document.querySelector('form');
 
 formREF.addEventListener('submit', onFormSubmit);
-
