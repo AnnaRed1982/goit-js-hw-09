@@ -29,6 +29,7 @@
 // ВНИМАНИЕ
 // Этот функционал не обязателен при сдаче задания, но будет хорошей дополнительной практикой.
 // Для отображения уведомлений пользователю вместо console.log() используй библиотеку notiflix.
+import Notiflix from 'notiflix';
 
 function createPromise(position, delay) {
   return new Promise((resolve, reject) => {
@@ -59,9 +60,15 @@ function onFormSubmit(evt) {
   for (let i = 1; i <= amountNum; i += 1) {
     createPromise(i, delayNum)
       .then(({ position, delay }) => {
+        Notiflix.Notify.success(
+          '✅ Fulfilled promise ${position} in ${delay}ms'
+        );
         console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
       })
       .catch(({ position, delay }) => {
+        Notiflix.Notify.failure(
+          '❌ Rejected promise ${position} in ${delay}ms'
+        );
         console.log(`❌ Rejected promise ${position} in ${delay}ms`);
       });
 
