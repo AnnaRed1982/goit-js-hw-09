@@ -42,6 +42,7 @@
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
+const inputREF = document.querySelector('#datetime-picker');
 const buttonStartREF = document.querySelector('button[data-start]');
 
 const secondsREF = document.querySelector('span[data-seconds]');
@@ -55,11 +56,12 @@ const labelREF = document.querySelectorAll('.label');
 const valueREF = document.querySelectorAll('.value');
 
 const COUNTER_DELAY = 1000;
+let selectedDate = 0;
 
 buttonStartREF.setAttribute('disabled', 'true');
+
 timerREF.style.display = 'flex';
 timerREF.style.gap = '20px';
-
 fieldREF.forEach(field => {
   field.style.display = 'flex';
   field.style.flexDirection = 'column';
@@ -89,22 +91,21 @@ const options = {
 
     if (selectedDates[0] < Date.now()) {
       alert('Please choose a date in the future');
-      buttonStartREF.setAttribute('disabled', 'true');
       return;
     }
 
     buttonStartREF.removeAttribute('disabled');
-    buttonStartREF.addEventListener('click', () => {
-      startTimer(selectedDates[0].getTime());
-    });
+    selectedDate = selectedDates[0].getTime();
   },
 };
 
-const fp = flatpickr('#datetime-picker', options);
+const fp = flatpickr(inputREF, options);
+buttonStartREF.addEventListener('click', startTimer);
 
-function startTimer(selectedDate) {
+function startTimer() {
   let intervalTimer = setInterval(() => {
     buttonStartREF.setAttribute('disabled', 'true');
+    inputREF.setAttribute('disabled', 'true');
 
     const originalDate = Date.now();
     let timeSeconds = selectedDate - originalDate;
@@ -112,13 +113,16 @@ function startTimer(selectedDate) {
 
     if (timeSeconds > 0) {
       const { days, hours, minutes, seconds } = convertMs(timeSeconds);
-      days < 2
-        ? (daysREF.textContent = addLeadingZero(days))
-        : (daysREF.textContent = days);
+
+      daysREF.textContent = addLeadingZero(days);
       hoursREF.textContent = addLeadingZero(hours);
       minutesREF.textContent = addLeadingZero(minutes);
       secondsREF.textContent = addLeadingZero(seconds);
-    } else clearInterval(intervalTimer);
+    }
+    else {
+      clearInterval(intervalTimer);
+      inputREF.removeAttribute('disabled');
+    }
   }, COUNTER_DELAY);
 }
 
