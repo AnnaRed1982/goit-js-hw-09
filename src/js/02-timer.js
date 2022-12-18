@@ -105,10 +105,10 @@ const fp = flatpickr(inputREF, options);
 buttonStartREF.addEventListener('click', startTimer);
 
 function startTimer() {
+  buttonStartREF.setAttribute('disabled', 'true');
+  inputREF.setAttribute('disabled', 'true');
+  
   let intervalTimer = setInterval(() => {
-    buttonStartREF.setAttribute('disabled', 'true');
-    inputREF.setAttribute('disabled', 'true');
-
     const originalDate = Date.now();
     let timeSeconds = selectedDate - originalDate;
     console.log(timeSeconds);
